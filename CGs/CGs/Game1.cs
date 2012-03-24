@@ -19,10 +19,19 @@ namespace CGs
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D texture;
+        Rectangle rect;
+        Color[] data;
+        Raytrace.Raytrace renderer;
+        int sizeX, sizeY;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            
+            // ウインドウサイズを変更
+            graphics.PreferredBackBufferHeight = graphics.PreferredBackBufferWidth;
         }
 
         /// <summary>
@@ -34,6 +43,27 @@ namespace CGs
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+
+            // 画像サイズの設定
+            Raytrace.Camera.resolutionX = Raytrace.Camera.resolutionY = graphics.PreferredBackBufferWidth;
+            sizeX = sizeY = Raytrace.Camera.resolutionY;
+
+            // 描画する画像の初期化
+            texture = new Texture2D(graphics.GraphicsDevice, sizeX, sizeY);
+            data = new Color[sizeX * sizeY];
+            rect = new Rectangle(0, 0, sizeX, sizeY);
+            for (int x = 0; x < sizeX; x++)
+            {
+                for (int y = 0; y < sizeY; y++)
+                {
+                    Color c = Color.Red;
+                    data[x + y * sizeX] = c;
+                }
+            }
+            texture.SetData(data);
+
+            // レンダラの初期化
+            renderer = new Raytrace.Raytrace();
 
             base.Initialize();
         }
@@ -72,6 +102,7 @@ namespace CGs
 
             // TODO: Add your update logic here
 
+
             base.Update(gameTime);
         }
 
@@ -84,6 +115,23 @@ namespace CGs
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+
+            // ウインドウタイトルの更新
+            if (0 < gameTime.ElapsedGameTime.TotalSeconds)
+            {
+                float fps = (float)(1 / gameTime.ElapsedGameTime.TotalSeconds);
+                Window.Title = "CGs(" + fps + ")";
+            }
+
+            // 描画画像の更新
+            if (renderer.Draw(data, sizeX, sizeY) == false) Exit();
+            GraphicsDevice.Textures[0] = null;  // これをしないでtexture.SetDataを呼ぶと例外が発生する
+            texture.SetData(data);
+            
+            // 描画
+            spriteBatch.Begin();
+            spriteBatch.Draw(texture, rect, Color.White);
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
