@@ -13,9 +13,15 @@ using System.Windows.Forms;
 
 namespace CGs.Raytrace
 {
-    class Raytrace
+    class Raytrace : CGs.Renderer
     {
-        public bool Draw(Color[] target, int w, int h)
+        public override void Initialize(int w, int h)
+        {
+            Camera.resolutionX = w;
+            Camera.resolutionY = h;
+        }
+
+        override public bool Draw(Color[] target, int w, int h)
         {
             if (target.Length < w * h)
             {
@@ -37,7 +43,7 @@ namespace CGs.Raytrace
                 Vector3 v;
                 if (s.isIntersect(cam.from, cam.to, out v))
                 {
-                    target[i++] = shader.shading(v);
+                    target[i] = shader.shading(v);
                 }
                 else
                 {

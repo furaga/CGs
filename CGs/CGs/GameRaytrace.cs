@@ -14,7 +14,7 @@ namespace CGs
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class GameRaytrace : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -22,10 +22,10 @@ namespace CGs
         Texture2D texture;
         Rectangle rect;
         Color[] data;
-        Raytrace.Raytrace renderer;
+        Renderer renderer;
         int sizeX, sizeY;
 
-        public Game1()
+        public GameRaytrace()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -44,9 +44,11 @@ namespace CGs
         {
             // TODO: Add your initialization logic here
 
-            // 画像サイズの設定
-            Raytrace.Camera.resolutionX = Raytrace.Camera.resolutionY = graphics.PreferredBackBufferWidth;
-            sizeX = sizeY = Raytrace.Camera.resolutionY;
+            // レンダラの初期化
+            renderer = new Raytrace2.Raytrace(); 
+            renderer.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferWidth);
+
+            sizeX = sizeY = graphics.PreferredBackBufferWidth;
 
             // 描画する画像の初期化
             texture = new Texture2D(graphics.GraphicsDevice, sizeX, sizeY);
@@ -56,14 +58,11 @@ namespace CGs
             {
                 for (int y = 0; y < sizeY; y++)
                 {
-                    Color c = Color.Red;
+                    Color c = Color.White;
                     data[x + y * sizeX] = c;
                 }
             }
             texture.SetData(data);
-
-            // レンダラの初期化
-            renderer = new Raytrace.Raytrace();
 
             base.Initialize();
         }
