@@ -124,6 +124,7 @@
     <Compile Include="Raytrace\Raytrace.cs" />
     <Compile Include="Renderer.cs" />
     <Compile Include="GameHLSL.cs" />
+    <Compile Include="GameHLSL2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

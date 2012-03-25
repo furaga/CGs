@@ -21,7 +21,7 @@
 	[概要]
 	・もう少しまともなレイトレ
 	・未実装
-
+	
 3. HLSLその1
 
 	[ソースコード]
@@ -31,3 +31,15 @@
 	[概要]
 	・HLSLの練習プログラムその１
 	・立方体が回るだけ
+
+3. HLSLその2
+
+	[ソースコード]
+	・GameHLSL2.cs
+	・Content/Shader/sample.fx
+	・Content/Shader/sample2.fx
+
+	[概要]
+	・HLSLの練習プログラムその2
+	・回転する立方体が描かれたスクリーンが回転する
+	・RenderTarget2D（FBOのラッパー？）
