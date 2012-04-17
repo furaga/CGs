@@ -46,9 +46,10 @@ namespace CGs
 
             // ƒŒƒ“ƒ_ƒ‰‚Ì‰Šú‰»
             renderer = new Raytrace2.Raytrace(); 
-            renderer.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferWidth);
+            renderer.Initialize(graphics.PreferredBackBufferWidth, graphics.PreferredBackBufferHeight);
 
-            sizeX = sizeY = graphics.PreferredBackBufferWidth;
+            sizeX = graphics.PreferredBackBufferWidth;
+            sizeY = graphics.PreferredBackBufferHeight;
 
             // •`‰æ‚·‚é‰æ‘œ‚Ì‰Šú‰»
             texture = new Texture2D(graphics.GraphicsDevice, sizeX, sizeY);

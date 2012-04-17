@@ -75,7 +75,6 @@ namespace CGs
         IndexBuffer texIndexBuffer;
         // angle
         float angle = 0;
-        float angle2 = 0;
         // BG
         Color bgColor = new Color(125, 125, 255, 255);
         // RenderTarget

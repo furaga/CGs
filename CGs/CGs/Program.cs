@@ -10,7 +10,7 @@ namespace CGs
         /// </summary>
         static void Main(string[] args)
         {
-            using (var game = new GameHLSL2())
+            using (var game = new GameRaytrace())
             {
                 game.Run();
             }

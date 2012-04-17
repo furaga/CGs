@@ -109,9 +109,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Raytrace2\Actor.cs" />
-    <Compile Include="Raytrace2\Block.cs" />
     <Compile Include="Raytrace2\Camera.cs" />
-    <Compile Include="Raytrace2\Mirror.cs" />
+    <Compile Include="Raytrace2\Plane.cs" />
     <Compile Include="Raytrace2\Raytrace.cs" />
     <Compile Include="Raytrace2\Shader.cs" />
     <Compile Include="Raytrace2\Sphere.cs" />

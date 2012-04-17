@@ -24,11 +24,13 @@ namespace CGs.Raytrace2
             ray = r;
         }
 
-        public void setRay(int x, int y)
+        public Ray getRay(int x, int y)
         {
-            float d = 2.0f / (float)resolutionX;
-            ray.Position.X = -1.0f + (float)x * d;
-            ray.Position.Y = -1.0f + (float)y * d;
+            float dy = 2.0f / (float)resolutionX;
+            float dx = 2.0f / (float)resolutionY;
+            ray.Direction = new Vector3(-1.0f + (float)x * dx, -1.0f + (float)y * dy, 0) - ray.Position;
+            ray.Direction.Normalize();
+            return ray;
         }
     }
 }

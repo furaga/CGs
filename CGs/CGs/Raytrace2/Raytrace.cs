@@ -17,7 +17,6 @@ namespace CGs.Raytrace2
     {
         Camera cam;
         List<Actor> actors;
-        Sphere s;
         Shader shader;
 
         public override void Initialize(int w, int h)
@@ -26,19 +25,25 @@ namespace CGs.Raytrace2
             Camera.resolutionY = h;
 
             actors = new List<Actor>();
+            
+            var p = new Vector3(-0.40f, 0, -1);
+            var c = new Color(0.1f, 0.1f, 0.1f);
+            actors.Add(new Sphere(0.4, p, c));
 
-            for (int i = 0; i < 15; i++)
-            {
-                var p = new Vector3(0.7f * (float)Math.Sin(MathHelper.ToRadians(24 * i)), 0.7f * (float)Math.Cos(MathHelper.ToRadians(24 * i)), 0);
-                var c = new Color(1.0f / 15 * i, 0.0f, 0.0f);
-                actors.Add(new Sphere(0.1, p, c));
-            }
+            p = new Vector3(0.40f, 0f, 0.3f);
+            c = new Color(0.0f, 1.0f, 0.0f);
+            actors.Add(new Sphere(0.4, p, c));
 
-            shader = new Shader(new Vector3(1, 1, -1));
+            var offset = new Vector3(0, 0, -10);
+            var vx = new Vector3(0.1f, 0.0f, 0);
+            var vy = new Vector3(0.0f, 0.1f, 0);
+            actors.Add(new Plane(offset, vx, vy, Color.Red));
 
-            var from = new Vector3(0, 0, 10);
-            var to = new Vector3(0, 0, -1);
-            cam = new Camera(new Ray(from, to));
+            shader = new Shader(new Vector3(0, 0, -1));
+
+            var from = new Vector3(0, 0, 5);
+            var dir = new Vector3(0, 0, -1);
+            cam = new Camera(new Ray(from, dir));
         }
 
         override public bool Draw(Color[] target, int w, int h)
@@ -50,23 +55,53 @@ namespace CGs.Raytrace2
             }
             for (int i = 0; i < w * h; i++)
             {
-                target[i] = trace(i % w, i / w);
+                target[i] = new Color(trace(cam.getRay(i % w, i / h), null));
             }
             return true;
         }
 
-        Color trace(int x, int y)
+        Vector3 trace(Ray ray, Actor sender)
         {
-            cam.setRay(x, y);
-            var v = Vector3.Zero;
+            var nearestNorm = Vector3.Zero;
+            var nearestPos = Vector3.Zero;
+            Actor nearestActor = null;
+            var color = Vector3.Zero;
+
             foreach (var actor in actors)
             {
-                if (actor.isIntersect(cam.ray, out v))
+                if (actor == sender) continue;
+
+                var norm = Vector3.Zero;
+                var pos = Vector3.Zero;
+                if (actor.isIntersect(ray, out norm, out pos))
                 {
-                    return shader.shading(v, actor.color);
+                    var d1 = pos - ray.Position;
+                    var d2 = nearestPos - ray.Position;
+                    if (nearestActor == null)
+                    {
+                        nearestActor = actor;
+                        nearestNorm = norm;
+                        nearestPos = pos;
+                    }
+                    else if (d1.LengthSquared() < d2.LengthSquared())
+                    {
+                        nearestActor = actor;
+                        nearestNorm = norm;
+                        nearestPos = pos;
+                    }
                 }
             }
-            return Color.Gray;
+
+            if (nearestActor == null)
+            {
+                return Vector3.Zero;
+            }
+
+            var newRay = new Ray(nearestPos, nearestNorm);
+
+            var reflect = trace(newRay, nearestActor);
+
+            return shader.shading(nearestNorm, nearestActor.color) + reflect;
         }
     }
 }

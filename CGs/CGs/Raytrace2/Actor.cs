@@ -16,6 +16,6 @@ namespace CGs.Raytrace2
     abstract class Actor
     {
         public Color color;
-        abstract public bool isIntersect(Ray ray, out Vector3 v);
+        abstract public bool isIntersect(Ray ray, out Vector3 norm, out Vector3 pos);
     }
 }

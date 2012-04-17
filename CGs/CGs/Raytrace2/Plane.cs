@@ -13,16 +13,21 @@ using System.Windows.Forms;
 
 namespace CGs.Raytrace2
 {
-    class Sphere : Actor
+    class Plane : Actor
     {
-        double r;
-        Vector3 center;
+        Vector3 offset, vx, vy;
+        Vector3 norm;
 
-        public Sphere(double rad, Vector3 pos, Color col)
+        public Plane(Vector3 offset, Vector3 vx, Vector3 vy, Color color)
         {
-            r = rad;
-            center = pos;
-            color = col;
+            this.offset = offset;
+            this.vx = vx;
+            this.vx.Normalize();
+            this.vy = vy;
+            this.vy.Normalize();
+            this.color = color;
+            this.norm = Vector3.Cross(vx, vy);
+            this.norm.Normalize();
         }
 
         //---------------------------------------------------------------------
@@ -33,28 +38,24 @@ namespace CGs.Raytrace2
             var from = ray.Position;
             var to = ray.Direction;
 
-            norm = Vector3.Zero;
-            pos = Vector3.Zero;
+            norm = pos = Vector3.Zero;
+
+            var b = (vy.X * vx.Z - vx.X * vy.Z) / (vx.Y * vy.Z - vy.Y * vx.Z);
+            var c = (vy.X * vx.Y - vx.X * vy.Y) / (vx.Z * vy.Y - vy.Z * vx.Y);
+            var d = offset.X + b * offset.Y + c * offset.Z;
+
+            var de = to.X + b * to.Y + c * to.Z;
+            if (de == 0) return false;
+
+            var t = d - from.X - b * from.Y - c * from.Z;
+
+            if (t < 0) return false;
+
+            pos = t * to + from;
+            norm = this.norm;
+
             
-            var v = from - center;
-            var b = Vector3.Dot(to, v);
-            var c = v.LengthSquared() - r * r;
-            var d = b * b - c;
 
-            if (d < 0) return false;
-
-            var det = Math.Sqrt(d);
-            var t1 = - b + det;
-            var t2 = - b - det;
-
-            var t = 0.0;
-            if (t1 >= 0 && t2 < 0) t = t1;
-            else if (t2 >= 0) t = t2;
-            else return false;
-
-            pos = (float)t * to + from;
-            norm = pos - center;
-            norm.Normalize();
             return true;
         }
     }

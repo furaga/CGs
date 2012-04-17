@@ -21,16 +21,16 @@ namespace CGs.Raytrace2
         public Shader(Vector3 l)
         {
             light = l;
-            ambient = new Vector3(0.3f, 0.3f, 0.3f);
+            ambient = new Vector3(0.2f, 0.2f, 0.2f);
         }
 
-        public Color shading(Vector3 v, Color col)
+        public Vector3 shading(Vector3 v, Color col)
         {
-            float dot = Vector3.Dot(light, v);
+            float dot = MathHelper.Clamp(-Vector3.Dot(light, v), 0, 1);
             float r = col.R / 255.0f * dot;
             float g = col.G / 255.0f * dot;
             float b = col.B / 255.0f * dot;
-            Color c = new Color(new Vector3(r, g, b) + ambient);
+            var c = new Vector3(r, g, b) + ambient;
             return c;
         }
     }
