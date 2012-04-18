@@ -13,9 +13,30 @@ using System.Windows.Forms;
 
 namespace CGs.Raytrace2
 {
+    public class Material
+    {
+        public Vector3 amb, dif, spec;
+        public float specPower;
+        public float reflection, refraction, diffuse;
+        public Material(Vector3 amb, Vector3 dif, Vector3 spec, float specPower, float reflection = 0.0f, float refraction = 0.0f, float diffuse = 1.0f)
+        {
+            this.amb = amb;
+            this.dif = dif;
+            this.spec = spec;
+            this.specPower = specPower;
+            this.reflection = reflection;
+            this.refraction = refraction;
+            this.diffuse = diffuse;
+        }
+    }
     abstract class Actor
     {
-        public Color color;
+        public Material material;
         abstract public bool isIntersect(Ray ray, out Vector3 norm, out Vector3 pos);
+        
+        public Vector3 GetColor(float ln, float hn)
+        {
+            return material.amb + ln * material.dif+ (float)Math.Pow(hn, material.specPower) * material.spec;
+        }
     }
 }

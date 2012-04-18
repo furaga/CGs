@@ -24,6 +24,7 @@ namespace CGs
         Color[] data;
         Renderer renderer;
         int sizeX, sizeY;
+        bool flg = true;
 
         public GameRaytrace()
         {
@@ -123,10 +124,14 @@ namespace CGs
                 Window.Title = "CGs(" + fps + ")";
             }
 
-            // 描画画像の更新
-            if (renderer.Draw(data, sizeX, sizeY) == false) Exit();
-            GraphicsDevice.Textures[0] = null;  // これをしないでtexture.SetDataを呼ぶと例外が発生する
-            texture.SetData(data);
+            if (flg)
+            {
+                flg = false;
+                // 描画画像の更新
+                if (renderer.Draw(data, sizeX, sizeY) == false) Exit();
+                GraphicsDevice.Textures[0] = null;  // これをしないでtexture.SetDataを呼ぶと例外が発生する
+                texture.SetData(data);
+            }
             
             // 描画
             spriteBatch.Begin();

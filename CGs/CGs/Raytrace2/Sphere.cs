@@ -18,11 +18,11 @@ namespace CGs.Raytrace2
         double r;
         Vector3 center;
 
-        public Sphere(double rad, Vector3 pos, Color col)
+        public Sphere(double rad, Vector3 pos, Material mat)
         {
             r = rad;
             center = pos;
-            color = col;
+            material = mat;
         }
 
         //---------------------------------------------------------------------

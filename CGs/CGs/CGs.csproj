@@ -114,6 +114,7 @@
     <Compile Include="Raytrace2\Raytrace.cs" />
     <Compile Include="Raytrace2\Shader.cs" />
     <Compile Include="Raytrace2\Sphere.cs" />
+    <Compile Include="Raytrace2\TriangleMesh.cs" />
     <Compile Include="Raytrace\Camera.cs" />
     <Compile Include="Raytrace\Shader.cs" />
     <Compile Include="Raytrace\Sphere.cs" />

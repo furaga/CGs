@@ -18,16 +18,16 @@ namespace CGs.Raytrace2
         Vector3 offset, vx, vy;
         Vector3 norm;
 
-        public Plane(Vector3 offset, Vector3 vx, Vector3 vy, Color color)
+        public Plane(Vector3 offset, Vector3 vx, Vector3 vy, Material mat)
         {
             this.offset = offset;
             this.vx = vx;
             this.vx.Normalize();
             this.vy = vy;
             this.vy.Normalize();
-            this.color = color;
             this.norm = Vector3.Cross(vx, vy);
             this.norm.Normalize();
+            this.material = mat;
         }
 
         //---------------------------------------------------------------------
