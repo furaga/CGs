@@ -19,113 +19,112 @@ namespace CGs.Raytrace2
         List<Actor> actors;
         Shader shader;
         const int MAX_DEPTH = 3;
+        Material material1;
+        Material material2;
+        Material material3;
+        Material material4;
+        Material material5;
+        Material material6;
+        Material material7;
 
-        public override void Initialize(int w, int h)
+        public void InitializeMaterials()
         {
-            Camera.resolutionX = w;
-            Camera.resolutionY = h;
+            // マテリアルを作成
+            material1 =
+                new Material(
+                    new Vector3(0.05f, 0.01f, 0.01f),
+                    new Vector3(0.05f, 0.01f, 0.01f),
+                    new Vector3(0, 0, 0),
+                    32.0f
+                );
 
-            actors = new List<Actor>();
+            material2 =
+                new Material(
+                    new Vector3(0.01f, 0.01f, 0.05f),
+                    new Vector3(0.01f, 0.01f, 0.05f),
+                    new Vector3(0, 0, 0),
+                    32.0f
+                );
 
+            material3 =
+                new Material(
+                    new Vector3(0.05f, 0.05f, 0.05f),
+                    new Vector3(0.05f, 0.05f, 0.05f),
+                    new Vector3(0, 0, 0),
+                    32.0f
+                );
+
+            material4 =
+                new Material(
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0, 0, 0),
+                    32.0f
+                );
+
+            material5 =
+                new Material(
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0, 0, 0),
+                    32.0f,
+                    0.9f,
+                    0.0f,
+                    0.1f
+                );
+
+            material6 =
+                new Material(
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0, 0, 0),
+                    32.0f,
+                    0.0f,
+                    0.9f,
+                    0.1f
+                );
+
+            material7 =
+                new Material(
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0.01f, 0.05f, 0.01f),
+                    new Vector3(0, 0, 0),
+                    32.0f,
+                    1,
+                    0,
+                    0
+                );
+        }
+
+        public void InitializeWorld1()
+        {
             var offset = -3;
             var z0 = -5;
 
+            // カメラ
+            var from = new Vector3(0, -0.5f, 15);
+            var dir = new Vector3(0, 0, -1);
+            cam = new Camera(new Ray(from, dir));
+
             // シェーディング
-
-            shader = new Shader(new Vector3(0, -1, offset + 0.5f * z0), new Vector3(10, 9, 5));
-            //shader = new Shader(Vector3.Zero, new Vector3(10, 9, 5));
-
-            #region
-            //--------------------------------------------------
-            // 部屋を作成
-            //--------------------------------------------------
-
-            var material1 =
-                new Material(
-                    new Vector3(0.05f, 0.01f, 0.01f),
-                    new Vector3(0.05f, 0.01f, 0.01f),
-                    new Vector3(0, 0, 0),
-                    32.0f
-                );
-
-            var material2 =
-                new Material(
-                    new Vector3(0.01f, 0.01f, 0.05f),
-                    new Vector3(0.01f, 0.01f, 0.05f),
-                    new Vector3(0, 0, 0),
-                    32.0f
-                );
-
-            var material3 =
-                new Material(
-                    new Vector3(0.05f, 0.05f, 0.05f),
-                    new Vector3(0.05f, 0.05f, 0.05f),
-                    new Vector3(0, 0, 0),
-                    32.0f
-                );
-
-            var material4 =
-                new Material(
-                    new Vector3(0.01f, 0.05f, 0.01f),
-                    new Vector3(0.01f, 0.05f, 0.01f),
-                    new Vector3(0, 0, 0),
-                    32.0f
-                );
-
-            var material5 =
-                new Material(
-                    new Vector3(0.01f, 0.05f, 0.01f),
-                    new Vector3(0.01f, 0.05f, 0.01f),
-                    new Vector3(0, 0, 0),
-                    32.0f,
-                    0.9f,
-                    0.0f,
-                    0.1f
-                );
-
-            var material6 =
-                new Material(
-                    new Vector3(0.01f, 0.05f, 0.01f),
-                    new Vector3(0.01f, 0.05f, 0.01f),
-                    new Vector3(0, 0, 0),
-                    32.0f,
-                    0.0f,
-                    0.9f,
-                    0.1f
-                );
+            shader = new Shader(new Vector3(0, -1, offset + 0.5f * z0), new Vector3(10, 10, 10));
 
             // 左壁
             actors.Add(
-                new TriangleMesh(
+                new QuadMesh(
                     new Vector3(-1, 1, offset),
+                    new Vector3(-1, 1, offset + z0),
                     new Vector3(-1, -1, offset + z0),
                     new Vector3(-1, -1, offset),
                     material1
                 )
             );
 
-            actors.Add(
-                new TriangleMesh(
-                    new Vector3(-1, 1, offset),
-                    new Vector3(-1, 1, offset + z0),
-                    new Vector3(-1, -1, offset + z0),
-                    material1
-                )
-            );
-
             // 右壁
             actors.Add(
-                new TriangleMesh(
+                new QuadMesh(
                     new Vector3(1, 1, offset),
                     new Vector3(1, -1, offset),
-                    new Vector3(1, -1, offset + z0),
-                    material2
-                )
-            );
-
-            actors.Add(
-                new TriangleMesh(
-                    new Vector3(1, 1, offset),
                     new Vector3(1, -1, offset + z0),
                     new Vector3(1, 1, offset + z0),
                     material2
@@ -134,55 +133,19 @@ namespace CGs.Raytrace2
 
             // 奥壁
             actors.Add(
-                new TriangleMesh(
+                new QuadMesh(
                     new Vector3(-1, -1, offset + z0),
                     new Vector3(-1, 1, offset + z0),
                     new Vector3(1, 1, offset + z0),
-                    material5
-                )
-            );
-
-            actors.Add(
-                new TriangleMesh(
-                    new Vector3(-1, -1, offset + z0),
-                    new Vector3(1, 1, offset + z0),
                     new Vector3(1, -1, offset + z0),
                     material5
                 )
             );
-            /*
-            // 天井
-            actors.Add(
-                new TriangleMesh(
-                    new Vector3(-1, -1, offset),
-                    new Vector3(-1, -1, offset + z0),
-                    new Vector3(1, -1, offset),
-                    material3
-                )
-            );
-
-            actors.Add(
-                new TriangleMesh(
-                    new Vector3(1, -1, offset),
-                    new Vector3(-1, -1, offset + z0),
-                    new Vector3(1, -1, offset + z0),
-                    material3
-                )
-            );
-             */
 
             // 床
             actors.Add(
-                new TriangleMesh(
+                new QuadMesh(
                     new Vector3(-1, 1, offset),
-                    new Vector3(1, 1, offset),
-                    new Vector3(-1, 1, offset + z0),
-                    material3
-                )
-            );
-
-            actors.Add(
-                new TriangleMesh(
                     new Vector3(1, 1, offset),
                     new Vector3(1, 1, offset + z0),
                     new Vector3(-1, 1, offset + z0),
@@ -194,32 +157,118 @@ namespace CGs.Raytrace2
             actors.Add(
                 new Sphere(
                     0.2f,
-                    new Vector3(-0.3f, 0, offset + 0.5f * z0),
+                    new Vector3(-0.3f, 0.2f, offset + 0.5f * z0),
                     material5
                 )
             );
+
             // 玉2
             actors.Add(
                 new Sphere(
                     0.2f,
-                    new Vector3(0.4f, 0.8f, offset + 0.5f * z0),
+                    new Vector3(0.5f, 0.8f, offset + 0.2f * z0),
                     material6
                 )
             );
+
             // 玉3
             actors.Add(
                 new Sphere(
                     0.3f,
-                    new Vector3(0.5f, 0.7f, offset + 0.8f * z0),
+                    new Vector3(0, 0.7f, offset + 0.5f * z0),
                     material4
                 )
             );
-            #endregion
-            // カメラ
+        }
 
-            var from = new Vector3(0, -0.8f, 15);
+        public void InitializeWorld2()
+        {
+            // カメラ
+            var from = new Vector3(0, -1.5f, 15);
             var dir = new Vector3(0, 0, -1);
             cam = new Camera(new Ray(from, dir));
+
+            var offset = -3;
+            var z0 = -2;
+            // シェーディング
+            shader = new Shader(new Vector3(0, -1, 0), new Vector3(10, 10, 10));
+
+            // 床
+            actors.Add(
+                new CheckerPlain(
+                    new Vector3(0, 1, 0),
+                    new Vector3(0, -1, 0),
+                    material2,
+                    material3
+                )
+            );
+
+
+            // 左側の鏡
+            var angle = MathHelper.ToRadians(45.0f);
+            var dx = -0.5f * (float)Math.Cos(angle);
+            var vertice = new[] {
+                new Vector3(-0.5f, 0, 0),
+                new Vector3(-0.5f, 1, 0),
+                new Vector3(0.5f, 1, 0),
+                new Vector3(0.5f, 0, 0)
+            };
+            var m = Matrix.CreateRotationY(angle);
+            Vector3.Transform(vertice, ref m, vertice);
+            m = Matrix.CreateTranslation(new Vector3(dx, 0, offset + z0));
+            Vector3.Transform(vertice, ref m, vertice);
+
+            actors.Add(
+                new QuadMesh(
+                    vertice[0],
+                    vertice[1],
+                    vertice[2],
+                    vertice[3],
+                    material7
+                )
+            );
+
+            // 右側の鏡
+            vertice = new[] {
+                new Vector3(-0.5f, 0, 0),
+                new Vector3(-0.5f, 1, 0),
+                new Vector3(0.5f, 1, 0),
+                new Vector3(0.5f, 0, 0)
+            };
+            m = Matrix.CreateRotationY(-angle);
+            Vector3.Transform(vertice, ref m, vertice);
+            m = Matrix.CreateTranslation(new Vector3(-dx, 0, offset + z0));
+            Vector3.Transform(vertice, ref m, vertice);
+
+            actors.Add(
+                new QuadMesh(
+                    vertice[0],
+                    vertice[1],
+                    vertice[2],
+                    vertice[3],
+                    material7
+                )
+            );
+
+            // 球
+            actors.Add(
+                new Sphere(
+                    0.3f,
+                    new Vector3(0, 0.6f, offset),
+                    material3
+                )
+            );
+        }
+
+        public override void Initialize(int w, int h)
+        {
+            Camera.resolutionX = w;
+            Camera.resolutionY = h;
+
+            actors = new List<Actor>();
+
+            InitializeMaterials();
+            InitializeWorld1();
         }
 
         override public bool Draw(Color[] target, int w, int h)

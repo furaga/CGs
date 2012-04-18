@@ -25,9 +25,6 @@ namespace CGs.Raytrace2
             material = mat;
         }
 
-        //---------------------------------------------------------------------
-        // 球とベクトルto-fromが交差しているか。交差してたら交点の法線ベクトルをvに入れる
-        //---------------------------------------------------------------------
         override public bool isIntersect(Ray ray, out Vector3 norm, out Vector3 pos)
         {
             var from = ray.Position;

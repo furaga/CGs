@@ -33,8 +33,8 @@ namespace CGs.Raytrace2
     {
         public Material material;
         abstract public bool isIntersect(Ray ray, out Vector3 norm, out Vector3 pos);
-        
-        public Vector3 GetColor(float ln, float hn)
+
+        virtual public Vector3 GetColor(float ln, float hn, Vector3 hitPos)
         {
             return material.amb + ln * material.dif+ (float)Math.Pow(hn, material.specPower) * material.spec;
         }

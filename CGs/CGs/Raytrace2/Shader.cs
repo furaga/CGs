@@ -61,7 +61,7 @@ namespace CGs.Raytrace2
             if (ln < 0) ln = 0;
             if (hn < 0) hn = 0;
 
-            var dst = actor.GetColor(isShade ? 0.0f : ln, hn);
+            var dst = actor.GetColor(isShade ? 0.0f : ln, hn, pos);
             
             // 光源の色の反映
             dst.X *= lightColor.X;

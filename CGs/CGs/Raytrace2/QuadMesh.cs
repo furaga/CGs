@@ -13,16 +13,17 @@ using System.Windows.Forms;
 
 namespace CGs.Raytrace2
 {
-    class TriangleMesh : Actor
+    class QuadMesh : Actor
     {
-        Vector3 p0, p1, p2;
+        Vector3 p0, p1, p2, p3;
         Vector3 norm;
 
-        public TriangleMesh(Vector3 p0, Vector3 p1, Vector3 p2, Material mat)
+        public QuadMesh(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, Material mat)
         {
             this.p0 = p0;
             this.p1 = p1;
             this.p2 = p2;
+            this.p3 = p3;
             this.material = mat;
             this.norm = Vector3.Cross(p2 - p0, p1 - p0);
             this.norm.Normalize();
@@ -65,7 +66,14 @@ namespace CGs.Raytrace2
             }
 
             d0 = p - p2;
-            d1 = p0 - p2;
+            d1 = p3 - p2;
+            c = Vector3.Cross(d0, d1);
+            if (Vector3.Dot(c, norm) < 0)
+            {
+                return false;
+            }
+            d0 = p - p3;
+            d1 = p0 - p3;
             c = Vector3.Cross(d0, d1);
             if (Vector3.Dot(c, norm) < 0)
             {
